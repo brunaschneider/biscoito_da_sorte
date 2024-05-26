@@ -1,6 +1,6 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:math';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,9 +13,9 @@ class _HomePageState extends State<HomePage> {
   late String titulo;
   late String txtBotao;
   bool mostrarConteudo = false;
-  String fraseAtual = '';
+  late String fraseAtual;
   String botaoLabel = 'QUEBRAR BISCOITO';
-  String tituloAtual = 'LEIA SUA SORTE';
+  String tituloAtual = 'BISCOITO DA SORTE';
 
   final List<String> frasesDaSorte = [
     "Acredite em você mesmo e todas as coisas se tornarão possíveis.",
@@ -247,18 +247,73 @@ class _HomePageState extends State<HomePage> {
     "Você é capaz de grandes coisas."
   ];
 
+  List<String> favoritos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fraseAtual = frasesDaSorte[Random().nextInt(frasesDaSorte.length)];
+  }
+
+  void _toggleFavorito() {
+    setState(() {
+      if (favoritos.contains(fraseAtual)) {
+        favoritos.remove(fraseAtual);
+      } else {
+        favoritos.add(fraseAtual);
+      }
+    });
+  }
+
   void _quebrarBiscoito() {
     setState(() {
       if (mostrarConteudo) {
         fraseAtual = frasesDaSorte[Random().nextInt(frasesDaSorte.length)];
         botaoLabel = 'QUEBRAR BISCOITO';
-        tituloAtual = 'LEIA SUA SORTE';
       } else {
         botaoLabel = 'NOVO BISCOITO';
-        tituloAtual = 'FRASE DO DIA';
       }
       mostrarConteudo = !mostrarConteudo;
     });
+  }
+
+  void modalListaFavoritos(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Center(child: Text('Favoritos')),
+          content: SizedBox(
+            height: 300,
+            width: double.maxFinite,
+            child: favoritos.isEmpty
+                ? const Center(child: Text('Nenhum favorito adicionado.'))
+                : ListView.builder(
+              shrinkWrap: true,
+              itemCount: favoritos.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text(favoritos[index]),
+                    ),
+                    const Divider(thickness: 1),
+                  ],
+                );
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Voltar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -271,6 +326,18 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.red,
+            actions: [
+              IconButton(
+                icon: Icon(
+                  size: 42.sp,
+                  Icons.favorite,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  modalListaFavoritos(context);
+                },
+              ),
+            ],
           ),
           body: Stack(
             children: [
@@ -310,7 +377,9 @@ class _HomePageState extends State<HomePage> {
                                   'assets/biscoito.png',
                                   width: 200,
                                   height: 200,
-                                  fit: mostrarConteudo ? BoxFit.cover : BoxFit.contain,
+                                  fit: mostrarConteudo
+                                      ? BoxFit.cover
+                                      : BoxFit.contain,
                                 ),
                               ),
                               if (mostrarConteudo)
@@ -356,8 +425,8 @@ class _HomePageState extends State<HomePage> {
                                                   fraseAtual.isEmpty
                                                       ? frasesDaSorte[0]
                                                       : fraseAtual,
-                                                  style:
-                                                      const TextStyle(fontSize: 17),
+                                                  style: const TextStyle(
+                                                      fontSize: 17),
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ),
@@ -400,6 +469,32 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ),
+                              if (mostrarConteudo)
+                                Positioned(
+                                  top: 155.h,
+                                  left: 300.w,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          favoritos.contains(fraseAtual) ? Icons.star : Icons.star_border,
+                                          size: 42.sp,
+                                          color: favoritos.contains(fraseAtual) ? Colors.yellow : Colors.grey,
+                                        ),
+                                        onPressed: _toggleFavorito,
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          favoritos.contains(fraseAtual) ? Icons.star_border : Icons.star_border,
+                                          size: 45.sp,
+                                          color: favoritos.contains(fraseAtual) ? Colors.black : Colors.grey,
+                                        ),
+                                        onPressed: _toggleFavorito,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                             ],
                           ),
                         ),

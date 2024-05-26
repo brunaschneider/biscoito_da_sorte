@@ -1,27 +1,16 @@
-# Biscoito da Sorte
+# flutter_application_1
 
-Esse aplicativo tem como objetivo replicar a experiência de quebra de biscoito da sorte para o mundo virtual.
+A new Flutter project.
 
-## Objetivo
+## Getting Started
 
-O aplicativo Biscoito da Sorte visa trazer a diversão e a curiosidade dos biscoitos da sorte para uma experiência digital. Ele permite aos usuários "quebrar" um biscoito virtual e receber uma mensagem de sorte.
+This project is a starting point for a Flutter application.
 
-## Funcionalidades
+A few resources to get you started if this is your first Flutter project:
 
-- Quebra de biscoito virtual.
-- Exibição de mensagens de sorte.
-- Interface amigável e intuitiva.
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-## Tecnologias Utilizadas
-
-- Flutter: Framework para desenvolvimento multiplataforma.
-- Dart: Linguagem de programação utilizada no Flutter.
-
-## Estrutura do Projeto
-
-- `android/`: Código específico para a plataforma Android.
-- `ios/`: Código específico para a plataforma iOS.
-- `lib/`: Código principal do aplicativo.
-- `test/`: Testes automatizados do aplicativo.
-
-Você pode acessar o repositório [aqui](https://github.com/brunaschneider/biscoito_da_sorte).
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
